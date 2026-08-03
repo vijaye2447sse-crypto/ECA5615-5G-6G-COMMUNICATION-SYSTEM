@@ -1,1 +1,70 @@
+clc;
+clear;
+close all;
 
+%% Session Count
+sessionCount = 100:100:5000;
+
+%% Traffic Load Model (Mbps)
+AMF_Load = 0.8 * sessionCount + 10*randn(1,length(sessionCount));
+SMF_Load = 1.5 * sessionCount + 20*randn(1,length(sessionCount));
+UPF_Load = 3.0 * sessionCount + 30*randn(1,length(sessionCount));
+
+% Ensure no negative values
+AMF_Load = max(AMF_Load,0);
+SMF_Load = max(SMF_Load,0);
+UPF_Load = max(UPF_Load,0);
+
+%% Figure 1: Line Plot
+figure;
+plot(sessionCount,AMF_Load,'-ob','LineWidth',2);
+hold on;
+plot(sessionCount,SMF_Load,'-sr','LineWidth',2);
+plot(sessionCount,UPF_Load,'-^g','LineWidth',2);
+grid on;
+xlabel('Session Count');
+ylabel('Traffic Load (Mbps)');
+title('AMF, SMF and UPF Traffic Load under Session Count');
+legend('AMF','SMF','UPF','Location','northwest');
+
+%% Figure 2: Grouped Bar Chart
+Traffic = [AMF_Load(:), SMF_Load(:), UPF_Load(:)];
+
+figure;
+bar(Traffic,'grouped');
+grid on;
+xlabel('Session Count Index');
+ylabel('Traffic Load (Mbps)');
+title('Traffic Load Comparison');
+legend('AMF','SMF','UPF');
+
+% Display actual session count labels
+xticks(1:5:length(sessionCount));
+xticklabels(sessionCount(1:5:end));
+
+%% Figure 3: Normalized Traffic Load
+figure;
+plot(sessionCount,AMF_Load./max(AMF_Load),'b','LineWidth',2);
+hold on;
+plot(sessionCount,SMF_Load./max(SMF_Load),'r','LineWidth',2);
+plot(sessionCount,UPF_Load./max(UPF_Load),'g','LineWidth',2);
+grid on;
+xlabel('Session Count');
+ylabel('Normalized Traffic Load');
+title('Normalized Traffic Load vs Session Count');
+legend('AMF','SMF','UPF','Location','northwest');
+
+%% Figure 4: Traffic Load Area Plot
+figure;
+area(sessionCount,[AMF_Load' SMF_Load' UPF_Load']);
+grid on;
+xlabel('Session Count');
+ylabel('Traffic Load (Mbps)');
+title('AMF, SMF and UPF Traffic Load Distribution');
+legend('AMF','SMF','UPF','Location','northwest');
+
+%% Display Results
+Results = table(sessionCount',AMF_Load',SMF_Load',UPF_Load',...
+    'VariableNames',{'Session_Count','AMF_Load_Mbps','SMF_Load_Mbps','UPF_Load_Mbps'});
+
+disp(Results);
