@@ -1,1 +1,47 @@
+clc;
+clear;
+close all;
 
+%% Parameters
+users = 10:10:100;          % User Density
+subcarriers = 64:64:512;    % Number of Subcarriers
+power = 1:5;                % Power (W)
+symbol = [50 100 150 200];  % Symbol Duration (µs)
+
+%% Throughput Calculations
+T_users = 1000./users;
+T_sub = subcarriers*5;
+T_power = power*100;
+T_symbol = 10000./symbol;
+
+%% Plot 1: User Density
+figure;
+plot(users,T_users,'-o','LineWidth',2);
+grid on;
+xlabel('User Density');
+ylabel('Throughput');
+title('OFDMA Resource Allocation vs User Density');
+
+%% Plot 2: Subcarriers
+figure;
+plot(subcarriers,T_sub,'-s','LineWidth',2);
+grid on;
+xlabel('Subcarriers');
+ylabel('Throughput');
+title('OFDMA Resource Allocation vs Subcarriers');
+
+%% Plot 3: Power
+figure;
+plot(power,T_power,'-^','LineWidth',2);
+grid on;
+xlabel('Power (W)');
+ylabel('Throughput');
+title('OFDMA Resource Allocation vs Power');
+
+%% Plot 4: Symbol Duration
+figure;
+plot(symbol,T_symbol,'-d','LineWidth',2);
+grid on;
+xlabel('Symbol Duration (\mus)');
+ylabel('Throughput');
+title('OFDMA Resource Allocation vs Symbol Duration');
