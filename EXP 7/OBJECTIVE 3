@@ -1,1 +1,14 @@
+clc;
+clear;
+close all;
 
+% Main Lobe Directions (degrees)
+theta = [-60 -30 0 30 60];
+
+% Constant normalized gain
+gain = [1 1 1 1 1];
+
+figure;
+polar(deg2rad(theta), gain, 'ob');
+title('Main Lobe Direction in Analog Beamforming');
+grid on;
