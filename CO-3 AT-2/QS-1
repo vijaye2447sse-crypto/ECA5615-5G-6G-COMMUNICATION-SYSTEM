@@ -1,1 +1,56 @@
+clc;
+clear;
+close all;
 
+% Virtualized Wireless Access Framework
+N = 20;                 % Number of users
+RB = 100;               % Total resource blocks
+BW = 20e6;              % Bandwidth (20 MHz)
+SNR = randi([5 30],1,N);
+
+% Virtual resource allocation
+Resource = randi([1 8],1,N);
+Resource = round(Resource/sum(Resource)*RB);
+
+% Spectral efficiency using Shannon capacity
+SE = log2(1 + 10.^(SNR/10));
+
+% User throughput
+Throughput = Resource .* (BW/RB) .* SE / 1e6;
+
+% Latency model
+Latency = 100 ./ (SE .* Resource) + rand(1,N)*2;
+
+% Resource utilization
+Utilization = sum(Resource)/RB*100;
+
+% Display results
+fprintf('Virtualized Wireless Access Framework\n');
+fprintf('Total Resource Blocks = %d\n',RB);
+fprintf('Resource Utilization = %.2f %%\n',Utilization);
+fprintf('Average Throughput = %.2f Mbps\n',mean(Throughput));
+fprintf('Average Latency = %.2f ms\n',mean(Latency));
+
+% Plot results
+figure;
+
+subplot(3,1,1);
+bar(1:N,Throughput);
+xlabel('User');
+ylabel('Throughput (Mbps)');
+title('User Throughput');
+grid on;
+
+subplot(3,1,2);
+bar(1:N,Latency);
+xlabel('User');
+ylabel('Latency (ms)');
+title('User Latency');
+grid on;
+
+subplot(3,1,3);
+bar(1:N,Resource);
+xlabel('User');
+ylabel('Resource Blocks');
+title('Virtual Resource Allocation');
+grid on;
