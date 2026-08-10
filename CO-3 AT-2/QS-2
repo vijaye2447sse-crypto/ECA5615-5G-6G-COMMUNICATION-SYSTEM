@@ -1,1 +1,36 @@
+clc;
+clear;
+close all;
 
+% Parameters
+N = 20;              % Number of users
+C = 5;               % Number of available channels
+D = 4;               % Reuse distance
+
+% User positions
+x = randi([0 20],1,N);
+y = randi([0 20],1,N);
+
+% Channel reuse assignment
+Channel = mod(0:N-1,C) + 1;
+
+% Display allocation
+fprintf('User\tChannel\tPosition\n');
+for i = 1:N
+    fprintf('%d\t%d\t(%.0f, %.0f)\n',i,Channel(i),x(i),y(i));
+end
+
+% Plot channel reuse plan
+figure;
+hold on;
+
+for c = 1:C
+    k = Channel == c;
+    scatter(x(k),y(k),80,'filled');
+end
+
+xlabel('X Position');
+ylabel('Y Position');
+title('Multi-User Channel Reuse Plan');
+grid on;
+legend('Channel 1','Channel 2','Channel 3','Channel 4','Channel 5');
